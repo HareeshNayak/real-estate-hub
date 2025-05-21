@@ -2,10 +2,13 @@ import React from 'react'
 import { fetchProperties } from '@/utils/requests'
 import PropertyCard from '../PropertyCard'
 import Link from 'next/link'
-const HomeProperties = async() => {
+
+const HomeProperties = async () => {
   const data = await fetchProperties();
-  const recentProperties = data?.properties
-    .sort(() => Math.random() - Math.random())
+  const propertiesArray = Array.isArray(data?.properties) ? data.properties : [];
+  const recentProperties = propertiesArray
+    .slice() // avoid mutating original array
+    .sort(() => Math.random() - 0.5)
     .slice(0, 3);
 
   return (
